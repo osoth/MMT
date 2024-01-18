@@ -36,5 +36,6 @@ if __name__ == "__main__":
 	player.y = 10
 	player.gravity = 0
 	player.speed = 30  # increase movement speed
+	player.mouse_sensitivity = Vec2(200, 200)
 
 	app.run()
