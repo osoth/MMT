@@ -8,9 +8,9 @@ class CustomController(FirstPersonController):
 		super().update()
 
 		if held_keys['space']:
-			self.y += 2 * time.dt  # move up
+			self.y += 20 * time.dt  # move up
 		if held_keys['left shift']:
-			self.y -= 2 * time.dt  # move down
+			self.y -= 20 * time.dt  # move down
 
 
 if __name__ == "__main__":
@@ -35,6 +35,6 @@ if __name__ == "__main__":
 	player = CustomController()
 	player.y = 10
 	player.gravity = 0
-	player.speed = 10  # increase movement speed
+	player.speed = 30  # increase movement speed
 
 	app.run()
