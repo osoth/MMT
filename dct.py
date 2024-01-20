@@ -42,8 +42,32 @@ def dct2(fn3):
     return Trans
 
 # hier wird die dct matrix übergeben und ein wert der dann die kompriemierung bestimmt. muss noch gemacht werden
-def koeffizientenAnpassung(matrix, komprimierung):
+def koeffizientenAnpassung(matrix, komprimierungsIndex):
+    code = range(0,38)  #bis 11 eingetragen
+    # per hand eintragen :/
+    item = [(7,7),(6,7),(7,6),(7,5),(6,6),(5,7),(4,7),(5,6),(6,5),(7,4),(7,3),(6,4),(5,5),(4,6),(3,7),(2,7),(3,6),(4,5),(5,4),(6,3),(7,2),(7,1),(6,2),(5,3),(4,4),(3,5),(2,6),(1,7),(0,7),(1,6),(2,5),(3,4),(4,3),(5,2),(6,1),(7,0),(6,0),(5,1)]
+    zipped = zip(code,item)
+    dictZipped = dict(zipped)
+    tupel = dictZipped[komprimierungsIndex]
+    
 
+    B=8 #blocksize
+    h,w=np.array(matrix.shape[:2])/B * B
+    h = int(h)
+    w = int(w)
+    blocksV=int(h/B)
+    blocksH=int(w/B)
+    back0 = np.zeros((h,w), np.float32)
+    for row in range(blocksV):
+            for col in range(blocksH):
+                for i in range(0,komprimierungsIndex):
+                        currentblock = matrix[row*B:(row+1)*B,col*B:(col+1)*B]
+                        # i wählt aus dem dict das feld und die Zweite [0] wählen den eintrag in der liste
+                        currentblock[dictZipped[i][0],dictZipped[i][1]] = 0 
+                        matrix[row*B:(row+1)*B,col*B:(col+1)*B] = currentblock
+                        print("index:"+str(dictZipped[i][0])+str(dictZipped[i][1])+ "  " +str(currentblock[dictZipped[i][0],dictZipped[i][1]])) 
+
+    return matrix
     pass
 
 # nimmt die dct matrix und verwandelt sie in ein bild zurück das dann auf einen entity projeziert wird
@@ -68,10 +92,15 @@ if __name__ == "__main__":
     start_time = time.perf_counter()
     Trans = dct2('Hamburger.jpg')
     print(Trans)
+    Trans = koeffizientenAnpassung(Trans,37)
     Idct2(Trans)
     time.thread_time_ns
     end_time = time.perf_counter()
-
     # Calculate elapsed time
     elapsed_time = end_time - start_time
     print("Elapsed time: ", elapsed_time)
+    #for i in range(0,14):
+    #    for x,y in enumerate(range(0,i)):
+    #        print(str(x) + " : " + str(y-i) + " --> " + str(i))
+
+
