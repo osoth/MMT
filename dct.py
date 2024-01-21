@@ -20,7 +20,36 @@ import time
 #################################
 
 
-# brechnet die dct matrix des bildes. muss nur einmalig ausgeführt werden damit
+# hier wird die dct matrix übergeben und ein wert der dann die kompriemierung bestimmt. muss noch gemacht werden
+def koeffizientenAnpassung(matrix, komprimierungsIndex):
+    code = range(0,64)  #bis 11 eingetragen
+    # per hand eintragen :/
+    item = [(7,7),(6,7),(7,6),(7,5),(6,6),(5,7),(4,7),(5,6),(6,5),(7,4),(7,3),(6,4),(5,5),(4,6),(3,7),(2,7),(3,6),(4,5),(5,4),(6,3),(7,2),(7,1),(6,2),(5,3),(4,4),(3,5),(2,6),(1,7),(0,7),(1,6),(2,5),(3,4),(4,3),(5,2),(6,1),(7,0),(6,0),(5,1),(4,2),(3,3),(2,4),(1,5),(0,6),(0,5),(1,4),(2,3),(3,2),(4,1),(5,0),(4,0),(3,1),(2,2),(1,3),(0,4),(0,3),(1,2),(2,1),(3,0),(2,0),(1,1),(0,2),(0,1),(1,0),(0,0)]
+    print(len(item))
+    zipped = zip(code,item)
+    # das Dict um die Matrixen werte zu wissen, die von hinten nach vorne auf null gesetzt werden müssen
+    dictZipped = dict(zipped)
+    B=8 #blocksize
+    h,w=np.array(matrix.shape[:2])/B * B # universell die höhe und width bekommen
+    #Konversion to integer, einfach weil python dumm und automatisch float macht
+    h = int(h)
+    w = int(w)
+    # Unterteilung der Blöcke die in der Width und Hight benötigt werden
+    blocksV=int(h/B)
+    blocksH=int(w/B)
+    #erste schleife um die blöcke zu bekommen
+    for row in range(blocksV):
+            for col in range(blocksH):
+                currentblock = matrix[row*B:(row+1)*B,col*B:(col+1)*B]
+            # diese schleife um alle notwendigen matrix einträge im block auf null zu setzten
+                for i in range(0,komprimierungsIndex):
+                        # die Variable i wählt aus dem dictZipped das feld und die Zweite [0] 
+                        # wählen den eintrag in der liste
+                        currentblock[dictZipped[i][0],dictZipped[i][1]] = 0 
+                        matrix[row*B:(row+1)*B,col*B:(col+1)*B] = currentblock
+                        #print("index:"+str(dictZipped[i][0])+str(dictZipped[i][1])+ "  " +str(currentblock[dictZipped[i][0],dictZipped[i][1]])) #for debugging purpise
+    return matrix
+    
 def dct2(fn3):
     B=8 #blocksize
     img1 = cv2.imread(fn3, 0)
@@ -41,34 +70,6 @@ def dct2(fn3):
     plt.imshow(Trans,cmap="gray")
     return Trans
 
-# hier wird die dct matrix übergeben und ein wert der dann die kompriemierung bestimmt. muss noch gemacht werden
-def koeffizientenAnpassung(matrix, komprimierungsIndex):
-    code = range(0,38)  #bis 11 eingetragen
-    # per hand eintragen :/
-    item = [(7,7),(6,7),(7,6),(7,5),(6,6),(5,7),(4,7),(5,6),(6,5),(7,4),(7,3),(6,4),(5,5),(4,6),(3,7),(2,7),(3,6),(4,5),(5,4),(6,3),(7,2),(7,1),(6,2),(5,3),(4,4),(3,5),(2,6),(1,7),(0,7),(1,6),(2,5),(3,4),(4,3),(5,2),(6,1),(7,0),(6,0),(5,1)]
-    zipped = zip(code,item)
-    dictZipped = dict(zipped)
-    tupel = dictZipped[komprimierungsIndex]
-    
-
-    B=8 #blocksize
-    h,w=np.array(matrix.shape[:2])/B * B
-    h = int(h)
-    w = int(w)
-    blocksV=int(h/B)
-    blocksH=int(w/B)
-    back0 = np.zeros((h,w), np.float32)
-    for row in range(blocksV):
-            for col in range(blocksH):
-                for i in range(0,komprimierungsIndex):
-                        currentblock = matrix[row*B:(row+1)*B,col*B:(col+1)*B]
-                        # i wählt aus dem dict das feld und die Zweite [0] wählen den eintrag in der liste
-                        currentblock[dictZipped[i][0],dictZipped[i][1]] = 0 
-                        matrix[row*B:(row+1)*B,col*B:(col+1)*B] = currentblock
-                        print("index:"+str(dictZipped[i][0])+str(dictZipped[i][1])+ "  " +str(currentblock[dictZipped[i][0],dictZipped[i][1]])) 
-
-    return matrix
-    pass
 
 # nimmt die dct matrix und verwandelt sie in ein bild zurück das dann auf einen entity projeziert wird
 def Idct2(Trans):
