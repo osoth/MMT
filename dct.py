@@ -72,7 +72,7 @@ def dct2(fn3):
 
 
 # nimmt die dct matrix und verwandelt sie in ein bild zurück das dann auf einen entity projeziert wird
-def Idct2(Trans):
+def Idct2(Trans, Iteration):
     B=8 #blocksize
     h,w=np.array(Trans.shape[:2])/B * B
     h = int(h)
@@ -84,7 +84,7 @@ def Idct2(Trans):
             for col in range(blocksH):
                     currentblock = cv2.idct(Trans[row*B:(row+1)*B,col*B:(col+1)*B])
                     back0[row*B:(row+1)*B,col*B:(col+1)*B]=currentblock
-    cv2.imwrite('BackTransformed.jpg', back0)
+    cv2.imwrite('Bilder/BackTransformed'+ str(Iteration) + '.jpg', back0)
 
 
 if __name__ == "__main__":
@@ -93,8 +93,8 @@ if __name__ == "__main__":
     start_time = time.perf_counter()
     Trans = dct2('Hamburger.jpg')
     print(Trans)
-    Trans = koeffizientenAnpassung(Trans,37)
-    Idct2(Trans)
+    Trans = koeffizientenAnpassung(Trans,64)
+    Idct2(Trans,1)
     time.thread_time_ns
     end_time = time.perf_counter()
     # Calculate elapsed time
