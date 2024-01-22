@@ -25,7 +25,6 @@ def koeffizientenAnpassung(matrix, komprimierungsIndex):
     code = range(0,64)  #bis 11 eingetragen
     # per hand eintragen :/
     item = [(7,7),(6,7),(7,6),(7,5),(6,6),(5,7),(4,7),(5,6),(6,5),(7,4),(7,3),(6,4),(5,5),(4,6),(3,7),(2,7),(3,6),(4,5),(5,4),(6,3),(7,2),(7,1),(6,2),(5,3),(4,4),(3,5),(2,6),(1,7),(0,7),(1,6),(2,5),(3,4),(4,3),(5,2),(6,1),(7,0),(6,0),(5,1),(4,2),(3,3),(2,4),(1,5),(0,6),(0,5),(1,4),(2,3),(3,2),(4,1),(5,0),(4,0),(3,1),(2,2),(1,3),(0,4),(0,3),(1,2),(2,1),(3,0),(2,0),(1,1),(0,2),(0,1),(1,0),(0,0)]
-    print(len(item))
     zipped = zip(code,item)
     # das Dict um die Matrixen werte zu wissen, die von hinten nach vorne auf null gesetzt werden müssen
     dictZipped = dict(zipped)
@@ -43,7 +42,7 @@ def koeffizientenAnpassung(matrix, komprimierungsIndex):
                 currentblock = matrix[row*B:(row+1)*B,col*B:(col+1)*B]
             # diese schleife um alle notwendigen matrix einträge im block auf null zu setzten
                 for i in range(0,komprimierungsIndex):
-                        # die Variable i wählt aus dem dictZipped das feld und die Zweite [0] 
+                # die Variable i wählt aus dem dictZipped das feld und die Zweite [0] 
                         # wählen den eintrag in der liste
                         currentblock[dictZipped[i][0],dictZipped[i][1]] = 0 
                         matrix[row*B:(row+1)*B,col*B:(col+1)*B] = currentblock
@@ -93,7 +92,7 @@ if __name__ == "__main__":
     start_time = time.perf_counter()
     Trans = dct2('Hamburger.jpg')
     print(Trans)
-    Trans = koeffizientenAnpassung(Trans,64)
+    Trans = koeffizientenAnpassung(Trans,32)
     Idct2(Trans,1)
     time.thread_time_ns
     end_time = time.perf_counter()

@@ -20,14 +20,15 @@ plane.rotation_z = 0
 plane.rotation_x = +90
 plane.rotation_y = +160
 Trans = dct.dct2('rickastley.jpg')
+for k in range(0,64):
+    Trans = dct.koeffizientenAnpassung(Trans,k)
+    dct.Idct2(Trans,k)
 
 
 def input(key, Trans=Trans):
 	global i
 	if (key == 'space'):
-		Trans = dct.koeffizientenAnpassung(Trans, 10)
-		Trans = dct.Idct2(Trans, 10)
-		plane.texture = load_texture('rickastley.jpg')
+		plane.texture = load_texture('Bilder/BackTransformed'+str(i)+'.jpg')
 		invoke(setattr, plane, 'y', plane.y, delay=.25)
 		i += 1
 		print(i)
