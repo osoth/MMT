@@ -1,10 +1,8 @@
 import numpy as np
-from scipy.fftpack import dct, idct
-from PIL import Image, ImageOps
 import matplotlib.pyplot as plt
 import cv2 as cv2
-from matplotlib.colors import Normalize
 import time
+import math
 ######################
 # 
 #  Das programm soll später in den haupt script importiert werden und die dct2 funktion aufgerufen werden
@@ -14,11 +12,44 @@ import time
 #  dann auf ein Objekt projezuiert damit man es sehen kann. Durch eine Update funktion wird dieses bilde
 #  dann immer ausgetauscht mit dem entsprechenden angepassten komprimerungskoeffizienten
 #
-#
-#
-#
 #################################
 
+
+def patterns():
+    #DCT matrix
+    N=8 # matrix shape: 8*8
+    DCT=np.zeros((N,N),np.float32)
+    for m in range(N):
+        for n in range(N):
+            if m==0:
+                DCT[m][n]=math.sqrt(1/N)
+            else:
+                DCT[m][n]=math.sqrt(2/N)*math.cos((2*n+1)*math.pi*m/(2*N))
+
+# DCT basis image
+    basis=np.zeros((N*N,N*N), np.float32)
+    for m in range(N):
+        for n in range(N):
+            pos_m=m*N
+            pos_n=n*N
+            DCT_v=DCT[m,:].reshape(-1,1)
+            DCT_T_h=DCT.T[:,n].reshape(-1,N)
+            basis[pos_m:pos_m+N,pos_n:pos_n+N]=np.matmul(DCT_v,DCT_T_h)
+
+# Center values
+    basis+=np.absolute(np.amin(basis))
+    scale=np.around(1/np.amax(basis),decimals=3)
+    for m in range(basis.shape[0]):
+        for n in range(basis.shape[1]):
+            basis[m][n]=np.around(basis[m][n]*scale,decimals=3)
+    cv2.imwrite('Bilder/DCT/Base.jpg',basis)
+
+    plt.figure(figsize=(4,4))
+    plt.gray()
+    plt.axis('off')
+    plt.title('DCT Basis Image')
+    plt.imshow(basis,vmin=0)
+    plt.savefig(fname='Bilder/DCT/Base.jpg',dpi='figure')
 
 # hier wird die dct matrix übergeben und ein wert der dann die kompriemierung bestimmt. muss noch gemacht werden
 def koeffizientenAnpassung(matrix, komprimierungsIndex):
@@ -53,22 +84,7 @@ def koeffizientenAnpassung(matrix, komprimierungsIndex):
     cv2.imwrite('Bilder/Pattern/Pattern'+ str(komprimierungsIndex)+'.jpg', back0)
     return matrix
     
-def Ko_patterns(Matrix, Index):
-    B=8 #blocksize
-    h,w=np.array(Matrix.shape[:2])/B * B
-    h = int(h)
-    w = int(w)
-    blocksV=int(h/B)
-    blocksH=int(w/B)
-    back0 = np.zeros((h,w), np.float32)
-    for row in range(blocksV):
-            for col in range(blocksH):
-                    currentblock = cv2.idct(Matrix[row*B:(row+1)*B,col*B:(col+1)*B])
-                    back0[row*B:(row+1)*B,col*B:(col+1)*B]=currentblock
-    cv2.imwrite('Bilder/Pattern/Pattern'+ str(Index)+'.jpg', back0)
-
-
-
+# Generiert die Pattern von der Standard dct
 def Dct2(fn3):
     B=8 #blocksize
     img1 = cv2.imread(fn3, 0)
@@ -109,9 +125,7 @@ if __name__ == "__main__":
     import sys
     
     start_time = time.perf_counter()
-    Trans = Dct2('Hamburger.jpg')
-    Trans1 = koeffizientenAnpassung(Trans,1)
-    Idct2(Trans1, 1) 
+    patterns()
     end_time = time.perf_counter()
     # Calculate elapsed time
     elapsed_time = end_time - start_time
