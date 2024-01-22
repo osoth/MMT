@@ -37,6 +37,7 @@ def koeffizientenAnpassung(matrix, komprimierungsIndex):
     blocksV=int(h/B)
     blocksH=int(w/B)
     #erste schleife um die blöcke zu bekommen
+    back0 = np.zeros((h,w), np.float32)
     for row in range(blocksV):
             for col in range(blocksH):
                 currentblock = matrix[row*B:(row+1)*B,col*B:(col+1)*B]
@@ -46,10 +47,29 @@ def koeffizientenAnpassung(matrix, komprimierungsIndex):
                         # wählen den eintrag in der liste
                         currentblock[dictZipped[i][0],dictZipped[i][1]] = 0 
                         matrix[row*B:(row+1)*B,col*B:(col+1)*B] = currentblock
+                        back0[row*B:(row+1)*B,col*B:(col+1)*B]=currentblock
                         #print("index:"+str(dictZipped[i][0])+str(dictZipped[i][1])+ "  " +str(currentblock[dictZipped[i][0],dictZipped[i][1]])) #for debugging purpise
+
+    cv2.imwrite('Bilder/Pattern/Pattern'+ str(komprimierungsIndex)+'.jpg', back0)
     return matrix
     
-def dct2(fn3):
+def Ko_patterns(Matrix, Index):
+    B=8 #blocksize
+    h,w=np.array(Matrix.shape[:2])/B * B
+    h = int(h)
+    w = int(w)
+    blocksV=int(h/B)
+    blocksH=int(w/B)
+    back0 = np.zeros((h,w), np.float32)
+    for row in range(blocksV):
+            for col in range(blocksH):
+                    currentblock = cv2.idct(Matrix[row*B:(row+1)*B,col*B:(col+1)*B])
+                    back0[row*B:(row+1)*B,col*B:(col+1)*B]=currentblock
+    cv2.imwrite('Bilder/Pattern/Pattern'+ str(Index)+'.jpg', back0)
+
+
+
+def Dct2(fn3):
     B=8 #blocksize
     img1 = cv2.imread(fn3, 0)
     h,w=np.array(img1.shape[:2])/B * B
@@ -65,8 +85,7 @@ def dct2(fn3):
         for col in range(blocksH):
             currentblock = cv2.dct(vis0[row*B:(row+1)*B,col*B:(col+1)*B])
             Trans[row*B:(row+1)*B,col*B:(col+1)*B]=currentblock
-    cv2.imwrite('Transformed.jpg', Trans)
-    plt.imshow(Trans,cmap="gray")
+    cv2.imwrite('Transformed.jpg', img1)
     return Trans
 
 
@@ -90,11 +109,9 @@ if __name__ == "__main__":
     import sys
     
     start_time = time.perf_counter()
-    Trans = dct2('Hamburger.jpg')
-    print(Trans)
-    Trans = koeffizientenAnpassung(Trans,32)
-    Idct2(Trans,1)
-    time.thread_time_ns
+    Trans = Dct2('Hamburger.jpg')
+    Trans1 = koeffizientenAnpassung(Trans,1)
+    Idct2(Trans1, 1) 
     end_time = time.perf_counter()
     # Calculate elapsed time
     elapsed_time = end_time - start_time
