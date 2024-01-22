@@ -19,11 +19,12 @@ plane.z = 0
 # Fügen Sie eine Kamera hinzu, um die Szene zu betrachten
 camera = Entity(parent=scene, model='quad', scale=(1.7778, 1), color=color.gray)
 
+
 # Schreiben Sie den Code, um die Ebene um ihre eigene Achse zu drehen
 def update():
-    pass
+	pass
+
 
 EditorCamera()
 # Starten Sie die Anwendung
 app.run()
-
