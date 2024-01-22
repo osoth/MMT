@@ -1,30 +1,39 @@
 from ursina import *
+from ursina.prefabs.slider import Slider
+import dct
 
 app = Ursina()
 
-# Erstellen Sie eine neue Szene
+# Create a new scene
 scene = Entity()
+i = 0
 
-# Fügen Sie eine Ebene hinzu, die als Texturfläche dienen soll
-texture = load_texture('white_cube')
+Trans = dct.Dct2('rickastley.jpg')
+for k in range(0,64):
+    Trans1=dct.koeffizientenAnpassung(Trans,k)
+    dct.Idct2(Trans1,k)
 
-# Erstellen Sie eine neue Ebene
-plane = Entity(model='plane', texture=texture)
+# Create a new plane
+parent_plane = Entity()
+plane = Entity(parent=parent_plane, model='plane', texture='Transformed.jpg')
 
-# Zentrieren Sie die Ebene in der Mitte der Szene
+# Center the plane in the middle of the scene
 plane.x = 0
 plane.y = 0
 plane.z = 0
+plane.rotation_z = 0
+plane.rotation_x = +90
+plane.rotation_y = +180
+# Create a slider
+slider = Slider(min=0, max=64, default_value=0, dynamic=True, position=(-0.25, -0.45))
 
-# Fügen Sie eine Kamera hinzu, um die Szene zu betrachten
-camera = Entity(parent=scene, model='quad', scale=(1.7778, 1), color=color.gray)
 
-
-# Schreiben Sie den Code, um die Ebene um ihre eigene Achse zu drehen
 def update():
-	pass
-
+	global i
+	global Trans
+	i = int(slider.value)
+	plane.texture = load_texture('Bilder/BackTransformed' + str(i) + '.jpg')
+	invoke(setattr, plane, 'y', plane.y, delay=.25)
 
 EditorCamera()
-# Starten Sie die Anwendung
 app.run()
