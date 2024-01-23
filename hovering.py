@@ -8,7 +8,7 @@ app = Ursina()
 scene = Entity()
 i = 0
 
-Trans = dct.Dct2('rickastley.jpg')
+Trans = dct.Dct2('Hamburger.jpg')
 for k in range(0,64):
     Trans1=dct.koeffizientenAnpassung(Trans,k)
     dct.Idct2(Trans1,k)
