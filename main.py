@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	app = Ursina()
 
 	# Load the image
-	img = Image.open('rickastley.jpg')
+	img = Image.open('AlanTuring.jpg')
 	pixels = img.load()
 
 	# Get the size of the image
