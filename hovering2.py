@@ -7,17 +7,25 @@ i = 0
 plane_visible = True
 plane2_visible = True
 
-
 def update():
 	global i
 	i = int(slider.value)
 	plane.texture = load_texture('Bilder/BackTransformed' + str(i) + '.jpg')
 	invoke(setattr, plane, 'y', plane.y, delay=.25)
+	plane3.texture = load_texture('Bilder/Pattern/Pattern'+str(i)+'.jpg')
+	invoke(setattr, plane, 'y', plane3.y, delay=.25)
 
 
 def input(key):
 	if held_keys['escape']:  # if ESC is pressed
 		options_menu.enabled = not options_menu.enabled
+	#wir brauchen eine Aufräum funktion aber q ist doof und escape ist belegt
+	if key == 'q':
+		for d in range(0,65):
+			os.remove('Bilder/BackTransformed'+str(d)+'.jpg')
+			os.remove('Bilder/Pattern/Pattern'+str(d)+'.jpg')
+			print('Bilder/Pattern/Pattern'+str(d)+'.jpg removed')
+		quit()
 
 
 def toggle_plane():
@@ -35,18 +43,21 @@ def toggle_plane2():
 
 
 if __name__ == "__main__":
+	import os
 	app = Ursina()
-
+	Trans = dct.Dct2('rickastley.jpg')
+	for k in range(0, 65):
+		Trans1 = dct.koeffizientenAnpassung(Trans, k)
+		dct.Idct2(Trans1, k)
 	# Create a new scene
 	scene = Entity()
 	start_screen = Text(text='Press ESC to open the options menu\nUse mouse or touchpad to pivot around', color=color.white, origin=(0, 0), background=True)
 	invoke(destroy, start_screen, delay=6)
-	img = cv2.imread('rickastley.jpg', 0)
-	cv2.imwrite('Bilder/original.jpg', img)
 	# Create a new plane
 	parent_plane = Entity()
-	plane = Entity(position=(0, 0, 0), parent=parent_plane, model='plane', texture='Transformed.jpg')
-	plane2 = Entity(position=(0, 0, 1), parent=parent_plane, model='plane', texture='Bilder/original.jpg')
+	plane = Entity(position=(0, 0, 0), parent=parent_plane, model='plane', texture='Bilder/BackTransformed0.jpg')
+	plane2 = Entity(position=(0, 0, 1), parent=parent_plane, model='plane', texture='Bilder/BackTransformed0.jpg')
+	plane3 = Entity(position=(0, 0, 2), parent=parent_plane, model='plane', texture='Bilder/Pattern/Pattern0.jpg')
 	plane2.rotation_x = +90
 	plane2.rotation_y = +180
 	# Center the plane in the middle of the scene
@@ -55,13 +66,11 @@ if __name__ == "__main__":
 	plane.z = 0
 	plane.rotation_z = +180
 	plane.rotation_x = +90
-	Trans = dct.Dct2('rickastley.jpg')
-	for k in range(0, 64):
-		Trans1 = dct.koeffizientenAnpassung(Trans, k)
-		dct.Idct2(Trans1, k)
+	plane3.rotation_x = +90
+	plane3.rotation_y = +180
 
 	# Create a slider
-	slider = Slider(min=0, max=64, default_value=0, dynamic=True, position=(-0.25, -0.45))
+	slider = Slider(min=0, max=65, default_value=0, dynamic=True, position=(-0.25, -0.45))
 
 	# Create options menu
 	options_menu = Entity(parent=camera.ui, enabled=False)
