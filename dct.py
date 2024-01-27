@@ -4,7 +4,7 @@ import cv2 as cv2
 import time
 import math
 ######################
-# 
+#
 #  Das programm soll später in den haupt script importiert werden und die dct2 funktion aufgerufen werden
 #  um dann die dct matrix zu erstellen, welche für die komprimierung bearbeitet werden kann.
 #

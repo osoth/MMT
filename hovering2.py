@@ -55,9 +55,10 @@ if __name__ == "__main__":
 	invoke(destroy, start_screen, delay=6)
 	# Create a new plane
 	parent_plane = Entity()
-	plane = Entity(position=(0, 0, 0), parent=parent_plane, model='plane', texture='Bilder/BackTransformed0.jpg')
-	plane2 = Entity(position=(0, 0, 1), parent=parent_plane, model='plane', texture='Bilder/BackTransformed0.jpg')
-	plane3 = Entity(position=(0, 0, 2), parent=parent_plane, model='plane', texture='Bilder/Pattern/Pattern0.jpg')
+	plane = Entity(position=(0, 0, 3), parent=parent_plane, model='plane', texture='Bilder/BackTransformed0.jpg')
+	plane2 = Entity(position=(0, 0, 2), parent=parent_plane, model='plane', texture='Bilder/BackTransformed0.jpg')
+	plane3 = Entity(position=(0, 0, 1), parent=parent_plane, model='plane', texture='Bilder/Pattern/Pattern0.jpg')
+	plane4 = Entity(position=(0, 0, 4), parent=parent_plane, model='plane', texture='Bilder/DCT/Base.jpg')
 	plane2.rotation_x = +90
 	plane2.rotation_y = +180
 	# Center the plane in the middle of the scene
@@ -68,6 +69,8 @@ if __name__ == "__main__":
 	plane.rotation_x = +90
 	plane3.rotation_x = +90
 	plane3.rotation_y = +180
+	plane4.rotation_x = +90
+	plane4.rotation_y = +180
 
 	# Create a slider
 	slider = Slider(min=0, max=65, default_value=0, dynamic=True, position=(-0.25, -0.45))
