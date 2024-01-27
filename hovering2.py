@@ -6,6 +6,7 @@ import dct
 i = 0
 plane_visible = True
 plane2_visible = True
+plane3_visible = True
 
 def update():
 	global i
@@ -14,6 +15,19 @@ def update():
 	invoke(setattr, plane, 'y', plane.y, delay=.25)
 	plane3.texture = load_texture('Bilder/Pattern/Pattern'+str(i)+'.jpg')
 	invoke(setattr, plane, 'y', plane3.y, delay=.25)
+
+
+	# camera navigation
+	origin.rotation_y += (
+		mouse.velocity[0]
+		
+		#only rotate if right mouse button is being held
+		* mouse.right * -200
+		)	
+	origin.rotation_x -= (
+		mouse.velocity[1]
+		* mouse.right * -200
+		)
 
 
 def input(key):
@@ -40,6 +54,12 @@ def toggle_plane2():
 	plane2.visible = not plane2.visible
 	plane2_visible = not plane2_visible
 	plane2_button.text = 'Toggle Plane2 (Currently: ' + ('Visible' if plane2_visible else 'Hidden') + ')'
+
+def toggle_plane3():
+	global plane3_visible
+	plane3.visible = not plane3.visible
+	plane3_visible = not plane3_visible
+	plane3_button.text = 'Toggle Plane3 (Currently: ' + ('Visible' if plane3_visible else 'Hidden') + ')'
 
 
 if __name__ == "__main__":
@@ -74,10 +94,15 @@ if __name__ == "__main__":
 
 	# Create options menu
 	options_menu = Entity(parent=camera.ui, enabled=False)
-	plane_button = Button(position=(-0.5, -0.3), parent=options_menu, text='Toggle Plane (Currently: Visible)', on_click=toggle_plane)
-	plane2_button = Button(position=(-0.5, 0), parent=options_menu, text='Toggle Plane2 (Currently: Visible)', on_click=toggle_plane2)
+	plane_button = Button(position=(-0.6, 0.25), scale=(0.5, 0.2), parent=options_menu, text='Toggle Plane (Currently: Visible)', on_click=toggle_plane)
+	plane2_button = Button(position=(-0.6, 0), scale=(0.5, 0.2), parent=options_menu, text='Toggle Plane2 (Currently: Visible)', on_click=toggle_plane2)
+	plane3_button = Button(position=(-0.6, -0.25), scale=(0.5, 0.2), parent=options_menu, text='Toggle Plane3 (Currently: Visible)', on_click=toggle_plane3)
+	#button1 = Button(text='Button 1', color=color.azure, scale=(0.1, 0.05), position=(-0.2, 0.2), on_click=on_button1_click)
 
 	# Create start screen
-
-	EditorCamera(position=(2.5, 0, 15), rotation=(0, 10, 180))
+	origin = Entity()
+	camera.parent = origin
+	camera.z = -10
+	camera.rotation_z = 180
+	#EditorCamera(position=(2.5, 0, 15), rotation=(0, 10, 180))
 	app.run()

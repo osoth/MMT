@@ -2,16 +2,6 @@ from PIL import Image
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-'''
-class CustomController(FirstPersonController):
-	def update(self):
-		super().update()
-
-		if held_keys['space']:
-			self.y += 20 * time.dt  # move up
-		if held_keys['left shift']:
-			self.y -= 20 * time.dt  # move down
-'''
 
 if __name__ == "__main__":
 	app = Ursina()
@@ -51,14 +41,6 @@ if __name__ == "__main__":
 
 	app.run()
 	
-'''
-	# Add a custom first-person controller
-	player = CustomController()
-	player.y = 10
-	player.gravity = 0
-	player.speed = 30  # increase movement speed
-	player.mouse_sensitivity = Vec2(200, 200)
-'''
 
 	
 
