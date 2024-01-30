@@ -8,6 +8,8 @@ plane_visible = True
 plane2_visible = True
 plane3_visible = True
 
+
+
 def update():
 	global i
 	i = int(slider.value)
@@ -61,6 +63,12 @@ def toggle_plane3():
 	plane3_visible = not plane3_visible
 	plane3_button.text = 'Toggle Plane3 (Currently: ' + ('Visible' if plane3_visible else 'Hidden') + ')'
 
+def popup(text):
+	global popupText
+	popupText.text = text
+	popupText.background = True
+	popupText.visible = True
+
 
 if __name__ == "__main__":
 	import os
@@ -101,6 +109,18 @@ if __name__ == "__main__":
 	plane2_button = Button(position=(-0.6, 0), scale=(0.5, 0.2), parent=options_menu, text='Toggle Plane2 (Currently: Visible)', on_click=toggle_plane2)
 	plane3_button = Button(position=(-0.6, -0.25), scale=(0.5, 0.2), parent=options_menu, text='Toggle Plane3 (Currently: Visible)', on_click=toggle_plane3)
 	#button1 = Button(text='Button 1', color=color.azure, scale=(0.1, 0.05), position=(-0.2, 0.2), on_click=on_button1_click)
+
+	popupText = Text(text="", position=(0.4,0.4), color=color.white, background=True, visible=False, size=0.02)
+
+	popup1 = "To do"
+	popup2 = "To do"
+	popup3 = "To do"
+	popup4 = "To do"
+
+	popup_button = Button(position=(0.5, 0.01, 0.5), rotation=(90,180,0), scale=(0.15, 0.15), color=color.turquoise, parent=plane, on_click=Func(popup, popup1))
+	popup_button2 = Button(position=(0.5, 0.01, 0.5), rotation=(90,180,0), scale=(0.15, 0.15), color=color.turquoise, parent=plane2, on_click=Func(popup, popup2))
+	popup_button3 = Button(position=(0.5, 0.01, 0.5), rotation=(90,180,0), scale=(0.15, 0.15), color=color.turquoise, parent=plane3, on_click=Func(popup, popup3))
+	popup_button4 = Button(position=(0.5, 0.01, 0.5), rotation=(90,180,0), scale=(0.15, 0.15), color=color.turquoise, parent=plane4, on_click=Func(popup, popup4))
 
 	# Create start screen
 	origin = Entity()
