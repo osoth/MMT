@@ -74,7 +74,7 @@ if __name__ == "__main__":
 	import os
 	app = Ursina()
 	Trans = dct.Dct2('rickastley.jpg')
-	for k in range(0, 65):
+	for k in range(0, 64):
 		Trans1 = dct.koeffizientenAnpassung(Trans, k)
 		dct.Idct2(Trans1, k)
 	# Create a new scene
