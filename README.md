@@ -12,3 +12,10 @@ pip install -r requirements.txt
 ```bash
 python3 main.py
 ```
+
+## Bedienung des Programms ##
+
+- mit [esc] kann das Menu aufgerufen werden um die einzelnen Ebenen aus und anszuschalten
+- durch das drücken der Rechten Maustaste und bewegen kann man um die Ebenen rumfahren und sie aus unterschiedlichen Blickwinkeln beobachten
+- durchs clicken auf die Buttons oben rechts an jeder Ebene kann man Popups öffnen um Erklärungen zu erhalten
+- durchs bedienen des Sliders kann man die Rekonstruktion des Bildes mit einer unterschiedlichen Anzahl an Koeefizienten beobachten 
