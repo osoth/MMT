@@ -101,7 +101,7 @@ if __name__ == "__main__":
 	plane4.rotation_y = +180
 
 	# Create a slider
-	slider = Slider(min=0, max=65, default_value=0, dynamic=True, position=(-0.25, -0.45))
+	slider = Slider(min=0, max=64, default_value=0, dynamic=True, position=(-0.25, -0.45))
 
 	# Create options menu
 	options_menu = Entity(parent=camera.ui, enabled=False)
