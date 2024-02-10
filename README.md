@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ## Ausführen des Programms ##
 
 ```bash
-python3 main.py
+python3 hovering2.py
 ```
 
 ## Bedienung des Programms ##
